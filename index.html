@@ -1,0 +1,933 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0b0e14">
+
+  <title>PC HUB | Tu centro de aplicaciones</title>
+
+  <style>
+    :root {
+      --bg: #0b0e14;
+      --panel: #121722;
+      --panel-hover: #192131;
+      --border: #252e3d;
+      --text: #f0f3fa;
+      --muted: #9aa7bb;
+      --accent: #7c6cff;
+      --accent-hover: #9589ff;
+      --green: #54e0a0;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background:
+        radial-gradient(ellipse at top, #1b2040 0%, transparent 45%),
+        var(--bg);
+      color: var(--text);
+      font-family: "Segoe UI", Arial, sans-serif;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    .container {
+      width: min(1200px, 92%);
+      margin: auto;
+    }
+
+    header {
+      padding: 25px 0;
+      border-bottom: 1px solid var(--border);
+      background: rgba(11, 14, 20, 0.8);
+    }
+
+    .header-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 18px;
+      flex-wrap: wrap;
+    }
+
+    .logo {
+      font-size: 27px;
+      font-weight: 900;
+      letter-spacing: -1px;
+    }
+
+    .logo span {
+      color: var(--accent);
+    }
+
+    .header-label {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .hero {
+      padding: 65px 0 35px;
+      text-align: center;
+    }
+
+    .eyebrow {
+      color: var(--green);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    .hero h1 {
+      margin: 15px 0;
+      font-size: clamp(34px, 6vw, 58px);
+      line-height: 1.1;
+      letter-spacing: -2px;
+    }
+
+    .hero h1 span {
+      color: var(--accent);
+    }
+
+    .hero p {
+      max-width: 650px;
+      margin: 0 auto;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .search-area {
+      max-width: 650px;
+      margin: 30px auto 0;
+    }
+
+    .search-box {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 15px 18px;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      transition: border-color 0.2s;
+    }
+
+    .search-box:focus-within {
+      border-color: var(--accent);
+    }
+
+    .search-box input {
+      width: 100%;
+      color: var(--text);
+      background: transparent;
+      border: none;
+      outline: none;
+    }
+
+    .search-box input::placeholder {
+      color: #77839a;
+    }
+
+    .section-heading {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
+      flex-wrap: wrap;
+      margin: 25px 0 18px;
+    }
+
+    .section-heading h2 {
+      margin: 0;
+      font-size: 23px;
+    }
+
+    .result-count {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    nav {
+      display: flex;
+      gap: 9px;
+      flex-wrap: wrap;
+      margin-bottom: 25px;
+    }
+
+    .filter {
+      padding: 10px 14px;
+      color: var(--muted);
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .filter:hover {
+      color: var(--text);
+      border-color: var(--accent);
+    }
+
+    .filter.active {
+      color: white;
+      background: var(--accent);
+      border-color: var(--accent);
+    }
+
+    .app-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+      padding-bottom: 55px;
+    }
+
+    .app-card {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+      padding: 20px;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      transition:
+        transform 0.2s,
+        background 0.2s,
+        border-color 0.2s;
+    }
+
+    .app-card:hover {
+      transform: translateY(-4px);
+      background: var(--panel-hover);
+      border-color: #49416f;
+    }
+
+    .app-top {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+    }
+
+    .app-icon {
+      display: grid;
+      flex-shrink: 0;
+      place-items: center;
+      width: 52px;
+      height: 52px;
+      background: #20263a;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      font-size: 27px;
+    }
+
+    .app-title {
+      min-width: 0;
+    }
+
+    .app-title h3 {
+      margin: 0 0 6px;
+      font-size: 17px;
+      overflow-wrap: anywhere;
+    }
+
+    .category-label {
+      color: var(--green);
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .app-description {
+      flex-grow: 1;
+      margin: 17px 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.65;
+    }
+
+    .tags {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-bottom: 17px;
+    }
+
+    .tag {
+      padding: 5px 8px;
+      color: #bdc6d8;
+      background: #1b2230;
+      border-radius: 6px;
+      font-size: 11px;
+    }
+
+    .card-actions {
+      display: flex;
+      gap: 9px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      flex: 1;
+      min-width: 105px;
+      padding: 10px 12px;
+      border: 1px solid transparent;
+      border-radius: 9px;
+      text-align: center;
+      text-decoration: none;
+      font-size: 12px;
+      font-weight: 750;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .btn.primary {
+      color: white;
+      background: var(--accent);
+    }
+
+    .btn.primary:hover {
+      background: var(--accent-hover);
+    }
+
+    .btn.secondary {
+      color: var(--text);
+      background: #202737;
+      border-color: var(--border);
+    }
+
+    .btn.secondary:hover {
+      background: #2a3448;
+    }
+
+    .tutorial {
+      margin-top: 15px;
+      padding-top: 13px;
+      border-top: 1px solid var(--border);
+    }
+
+    .tutorial summary {
+      color: #c7c0ff;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .tutorial ol {
+      padding-left: 22px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.7;
+    }
+
+    .tutorial li {
+      padding-left: 3px;
+      margin: 7px 0;
+    }
+
+    .tutorial-note {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.6;
+    }
+
+    .empty-state {
+      grid-column: 1 / -1;
+      padding: 55px 20px;
+      color: var(--muted);
+      text-align: center;
+      background: var(--panel);
+      border: 1px dashed var(--border);
+      border-radius: 16px;
+    }
+
+    .empty-state div {
+      margin-bottom: 10px;
+      font-size: 36px;
+    }
+
+    footer {
+      padding: 25px 0;
+      color: var(--muted);
+      text-align: center;
+      border-top: 1px solid var(--border);
+      font-size: 12px;
+      line-height: 1.8;
+    }
+
+    footer strong {
+      color: var(--text);
+    }
+
+    @media (max-width: 900px) {
+      .app-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 600px) {
+      .hero {
+        padding-top: 45px;
+      }
+
+      .app-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .header-content {
+        align-items: flex-start;
+      }
+
+      .filter {
+        font-size: 12px;
+        padding: 9px 10px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="container header-content">
+      <div class="logo">PC <span>HUB</span></div>
+      <div class="header-label">Tu centro de aplicaciones para PC</div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <div class="eyebrow">Descubre · Aprende · Instala</div>
+
+      <h1>Todo lo que tu PC <span>necesita.</span></h1>
+
+      <p>
+        Encuentra aplicaciones para tu ordenador, descubre para qué sirven
+        y aprende a utilizarlas con guías paso a paso y tutoriales.
+      </p>
+
+      <div class="search-area">
+        <label class="search-box">
+          <span aria-hidden="true">🔎</span>
+          <input
+            id="search"
+            type="search"
+            placeholder="Buscar aplicaciones, categorías o funciones..."
+            autocomplete="off"
+            aria-label="Buscar aplicaciones"
+          >
+        </label>
+      </div>
+    </section>
+
+    <section aria-labelledby="catalog-title">
+      <div class="section-heading">
+        <h2 id="catalog-title">Explorar aplicaciones</h2>
+        <span id="result-count" class="result-count"></span>
+      </div>
+
+      <nav id="filters" aria-label="Filtrar por categoría">
+        <button class="filter active" data-category="Todas">🌐 Todas</button>
+        <button class="filter" data-category="Hardware">🖥️ Hardware</button>
+        <button class="filter" data-category="Gaming">🎮 Gaming</button>
+        <button class="filter" data-category="Almacenamiento">💾 Almacenamiento</button>
+        <button class="filter" data-category="Creación">🎨 Creación</button>
+        <button class="filter" data-category="Programación">💻 Programación</button>
+        <button class="filter" data-category="Audio y vídeo">🎬 Audio y vídeo</button>
+        <button class="filter" data-category="Seguridad">🛡️ Seguridad</button>
+        <button class="filter" data-category="Utilidades">🧰 Utilidades</button>
+        <button class="filter" data-category="Personalización">✨ Personalización</button>
+      </nav>
+
+      <div id="app-grid" class="app-grid"></div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <strong>PC HUB</strong> · Un espacio para descubrir herramientas para tu PC.
+      <br>
+      Los programas pertenecen a sus respectivos desarrolladores.
+      Comprueba los requisitos y utiliza siempre sus sitios oficiales.
+    </div>
+  </footer>
+
+  <script>
+    const applications = [
+      // HARDWARE
+      {
+        name: "HWiNFO",
+        icon: "📊",
+        category: "Hardware",
+        description: "Consulta temperaturas, sensores, voltajes y detalles de los componentes de tu PC.",
+        tags: "temperaturas sensores cpu gpu ram diagnostico",
+        url: "https://www.hwinfo.com/",
+        steps: [
+          "Entra en la web oficial de HWiNFO.",
+          "Descarga la versión adecuada para tu sistema.",
+          "Ejecuta el programa.",
+          "Activa la ventana de sensores para consultar temperaturas y otros datos.",
+          "Observa los valores mientras utilizas tu PC."
+        ],
+        video: "https://www.youtube.com/results?search_query=HWiNFO+guia+español"
+      },
+      {
+        name: "HWMonitor",
+        icon: "🌡️",
+        category: "Hardware",
+        description: "Herramienta para revisar temperaturas, voltajes y otros sensores del equipo.",
+        tags: "temperatura cpu gpu voltaje sensores",
+        url: "https://www.cpuid.com/softwares/hwmonitor.html",
+        steps: [
+          "Abre la página oficial de CPUID.",
+          "Descarga HWMonitor.",
+          "Instala o ejecuta el programa según la versión descargada.",
+          "Busca los apartados de CPU, GPU y placa base.",
+          "Revisa los valores actuales y máximos registrados."
+        ],
+        video: "https://www.youtube.com/results?search_query=HWMonitor+como+usar+español"
+      },
+      {
+        name: "GPU-Z",
+        icon: "🎮",
+        category: "Hardware",
+        description: "Muestra información detallada sobre tu tarjeta gráfica, memoria y frecuencias.",
+        tags: "gpu tarjeta grafica nvidia amd vram",
+        url: "https://www.techpowerup.com/gpuz/",
+        steps: [
+          "Entra en la web oficial de TechPowerUp.",
+          "Descarga GPU-Z.",
+          "Abre la aplicación.",
+          "Consulta el modelo, la memoria y las características de la GPU.",
+          "Abre la pestaña Sensors para ver datos en tiempo real."
+        ],
+        video: "https://www.youtube.com/results?search_query=GPU-Z+como+usar+español"
+      },
+      {
+        name: "MSI Afterburner",
+        icon: "⚡",
+        category: "Hardware",
+        description: "Permite monitorizar la GPU y mostrar temperaturas y FPS durante los juegos.",
+        tags: "fps gpu temperatura rendimiento overlay",
+        url: "https://www.msi.com/Landing/afterburner/graphics-cards",
+        steps: [
+          "Entra en la página oficial de MSI Afterburner.",
+          "Descarga el instalador desde la fuente oficial.",
+          "Instala la aplicación y sus componentes incluidos si los necesitas.",
+          "Abre los ajustes y busca la sección de monitorización.",
+          "Selecciona las métricas que quieres consultar."
+        ],
+        video: "https://www.youtube.com/results?search_query=MSI+Afterburner+RTSS+configurar+español"
+      },
+
+      // GAMING
+      {
+        name: "Steam",
+        icon: "🎮",
+        category: "Gaming",
+        description: "Plataforma para comprar, organizar, descargar y jugar títulos de PC.",
+        tags: "juegos videojuegos biblioteca tienda",
+        url: "https://store.steampowered.com/about/",
+        steps: [
+          "Entra en la página oficial de Steam.",
+          "Descarga e instala el cliente.",
+          "Inicia sesión o crea una cuenta.",
+          "Explora la tienda y añade juegos a tu biblioteca.",
+          "Instala los títulos que tengas disponibles."
+        ],
+        video: "https://www.youtube.com/results?search_query=Steam+guia+principiantes+español"
+      },
+      {
+        name: "Epic Games Launcher",
+        icon: "🕹️",
+        category: "Gaming",
+        description: "Launcher para administrar y ejecutar juegos de Epic Games Store.",
+        tags: "juegos launcher epic biblioteca",
+        url: "https://store.epicgames.com/es-ES/download",
+        steps: [
+          "Abre la página oficial de Epic Games.",
+          "Descarga el launcher.",
+          "Instálalo e inicia sesión.",
+          "Visita tu biblioteca.",
+          "Instala y ejecuta los juegos disponibles en tu cuenta."
+        ],
+        video: "https://www.youtube.com/results?search_query=Epic+Games+Launcher+guia+español"
+      },
+      {
+        name: "Hydra Launcher",
+        icon: "🐉",
+        category: "Gaming",
+        description: "Launcher de código abierto para administrar bibliotecas de juegos. Comprueba la procedencia de cada fuente y utiliza contenido autorizado.",
+        tags: "gaming launcher juegos biblioteca codigo abierto",
+        url: "https://github.com/hydralauncher/hydra",
+        steps: [
+          "Entra en el repositorio oficial del proyecto.",
+          "Revisa las instrucciones y versiones disponibles.",
+          "Descarga una versión publicada por el proyecto.",
+          "Sigue las instrucciones oficiales de instalación.",
+          "Utiliza fuentes legítimas y juegos que tengas derecho a usar."
+        ],
+        video: "https://www.youtube.com/results?search_query=Hydra+Launcher+instalar+configurar+español"
+      },
+
+      // ALMACENAMIENTO
+      {
+        name: "CrystalDiskInfo",
+        icon: "💽",
+        category: "Almacenamiento",
+        description: "Consulta el estado de salud, la temperatura y los datos SMART de discos y SSD.",
+        tags: "ssd hdd disco salud almacenamiento smart",
+        url: "https://crystalmark.info/en/software/crystaldiskinfo/",
+        steps: [
+          "Entra en la web oficial de CrystalDiskInfo.",
+          "Descarga una versión adecuada.",
+          "Ejecuta el programa.",
+          "Selecciona el disco que quieres revisar.",
+          "Consulta el estado de salud, la temperatura y los datos SMART."
+        ],
+        video: "https://www.youtube.com/results?search_query=CrystalDiskInfo+como+usar+español"
+      },
+      {
+        name: "7-Zip",
+        icon: "🗜️",
+        category: "Almacenamiento",
+        description: "Comprime y descomprime archivos como ZIP, 7z y otros formatos.",
+        tags: "zip 7z comprimir descomprimir archivos",
+        url: "https://www.7-zip.org/",
+        steps: [
+          "Entra en la página oficial de 7-Zip.",
+          "Descarga la versión que corresponda a tu Windows.",
+          "Ejecuta el instalador.",
+          "Haz clic derecho en un archivo o carpeta.",
+          "Utiliza las opciones de 7-Zip para comprimir o extraer."
+        ],
+        video: "https://www.youtube.com/results?search_query=7-Zip+como+usar+español"
+      },
+
+      // CREACIÓN
+      {
+        name: "Blender",
+        icon: "🧊",
+        category: "Creación",
+        description: "Suite gratuita para modelado 3D, animación, renderizado y creación de escenas.",
+        tags: "3d modelado animacion render diseño",
+        url: "https://www.blender.org/download/",
+        steps: [
+          "Entra en la web oficial de Blender.",
+          "Descarga la versión compatible con tu sistema.",
+          "Instala y abre el programa.",
+          "Explora la interfaz y los controles básicos.",
+          "Empieza con un proyecto sencillo de modelado 3D."
+        ],
+        video: "https://www.youtube.com/results?search_query=Blender+desde+cero+español"
+      },
+      {
+        name: "OBS Studio",
+        icon: "🎥",
+        category: "Creación",
+        description: "Graba tu pantalla y transmite en directo con escenas y fuentes personalizables.",
+        tags: "grabacion streaming directos pantalla",
+        url: "https://obsproject.com/es",
+        steps: [
+          "Entra en la web oficial de OBS Studio.",
+          "Descarga la versión para Windows.",
+          "Instala y abre OBS.",
+          "Configura las escenas y añade una fuente de captura.",
+          "Haz una grabación de prueba y revisa el resultado."
+        ],
+        video: "https://www.youtube.com/results?search_query=OBS+Studio+configuracion+desde+cero+español"
+      },
+
+      // PROGRAMACIÓN
+      {
+        name: "Visual Studio Code",
+        icon: "💻",
+        category: "Programación",
+        description: "Editor de código para trabajar con HTML, CSS, JavaScript, Python y muchos otros lenguajes.",
+        tags: "codigo html css javascript python editor",
+        url: "https://code.visualstudio.com/",
+        steps: [
+          "Entra en la web oficial de Visual Studio Code.",
+          "Descarga e instala la aplicación.",
+          "Crea una carpeta para tu proyecto.",
+          "Abre la carpeta desde VS Code y crea tus archivos.",
+          "Instala extensiones oficiales cuando las necesites."
+        ],
+        video: "https://www.youtube.com/results?search_query=Visual+Studio+Code+desde+cero+español"
+      },
+      {
+        name: "Unity",
+        icon: "🧩",
+        category: "Programación",
+        description: "Motor de desarrollo para crear videojuegos 2D y 3D.",
+        tags: "unity videojuegos juegos 2d 3d desarrollo",
+        url: "https://unity.com/download",
+        steps: [
+          "Entra en la web oficial de Unity.",
+          "Descarga Unity Hub.",
+          "Instala una versión de Unity compatible con tu proyecto.",
+          "Crea un proyecto 2D o 3D.",
+          "Aprende a utilizar escenas, objetos, componentes y scripts."
+        ],
+        video: "https://www.youtube.com/results?search_query=Unity+6+desde+cero+español"
+      },
+
+      // AUDIO Y VÍDEO
+      {
+        name: "VLC Media Player",
+        icon: "📺",
+        category: "Audio y vídeo",
+        description: "Reproductor multimedia gratuito para numerosos formatos de vídeo y audio.",
+        tags: "video musica reproductor multimedia mp4",
+        url: "https://www.videolan.org/vlc/",
+        steps: [
+          "Entra en la web oficial de VideoLAN.",
+          "Descarga VLC para Windows.",
+          "Instala y abre el programa.",
+          "Selecciona un archivo multimedia para reproducirlo.",
+          "Explora los controles de audio, subtítulos y reproducción."
+        ],
+        video: "https://www.youtube.com/results?search_query=VLC+Media+Player+guia+español"
+      },
+      {
+        name: "Audacity",
+        icon: "🎙️",
+        category: "Audio y vídeo",
+        description: "Editor de audio para grabar voz, cortar clips y realizar ajustes básicos.",
+        tags: "audio voz grabacion edicion sonido",
+        url: "https://www.audacityteam.org/",
+        steps: [
+          "Entra en la web oficial de Audacity.",
+          "Descarga e instala la aplicación.",
+          "Conecta el micrófono si vas a grabar voz.",
+          "Crea una grabación o importa un archivo de audio.",
+          "Edita el sonido y exporta el resultado."
+        ],
+        video: "https://www.youtube.com/results?search_query=Audacity+desde+cero+español"
+      },
+
+      // SEGURIDAD: UN SOLO ANTIVIRUS
+      {
+        name: "Bitdefender Antivirus Free",
+        icon: "🛡️",
+        category: "Seguridad",
+        description: "Antivirus gratuito para Windows con protección en tiempo real contra malware y otras amenazas digitales.",
+        tags: "antivirus seguridad malware proteccion gratuito windows",
+        url: "https://www.bitdefender.com/es-es/consumer/free-antivirus",
+        steps: [
+          "Entra en la página oficial de Bitdefender.",
+          "Busca la descarga de Antivirus Free para Windows.",
+          "Descarga el instalador oficial.",
+          "Ejecuta el archivo y sigue las instrucciones.",
+          "Completa la configuración y comprueba que la protección esté activa."
+        ],
+        video: "https://www.youtube.com/results?search_query=Bitdefender+Antivirus+Free+instalar+español"
+      },
+
+      // UTILIDADES
+      {
+        name: "Microsoft PowerToys",
+        icon: "🧰",
+        category: "Utilidades",
+        description: "Colección de herramientas adicionales para mejorar el flujo de trabajo en Windows.",
+        tags: "windows productividad utilidades escritorios ventanas",
+        url: "https://learn.microsoft.com/windows/powertoys/install",
+        steps: [
+          "Entra en la documentación oficial de PowerToys.",
+          "Sigue uno de los métodos oficiales de instalación.",
+          "Abre PowerToys desde el menú Inicio.",
+          "Activa las herramientas que te interesen.",
+          "Consulta la documentación de cada herramienta para configurarla."
+        ],
+        video: "https://www.youtube.com/results?search_query=Microsoft+PowerToys+mejores+funciones+español"
+      },
+
+      // PERSONALIZACIÓN
+      {
+        name: "Lively Wallpaper",
+        icon: "🌌",
+        category: "Personalización",
+        description: "Personaliza el escritorio de Windows con fondos animados y fondos de pantalla interactivos.",
+        tags: "wallpaper fondos animados escritorio gratuito",
+        url: "https://www.rocksdanister.com/lively/",
+        steps: [
+          "Entra en la web oficial de Lively Wallpaper.",
+          "Sigue el enlace de descarga recomendado por el proyecto.",
+          "Instala y abre la aplicación.",
+          "Selecciona uno de los fondos disponibles.",
+          "Ajusta las opciones para que se adapten a tu PC."
+        ],
+        video: "https://www.youtube.com/results?search_query=Lively+Wallpaper+configurar+español"
+      },
+      {
+        name: "TranslucentTB",
+        icon: "✨",
+        category: "Personalización",
+        description: "Personaliza la apariencia de la barra de tareas de Windows con distintos efectos de transparencia.",
+        tags: "windows barra tareas transparencia personalizacion",
+        url: "https://github.com/TranslucentTB/TranslucentTB",
+        steps: [
+          "Entra en el repositorio oficial del proyecto.",
+          "Consulta las instrucciones de instalación disponibles.",
+          "Instala la aplicación desde una fuente oficial.",
+          "Abre el menú de la aplicación desde la bandeja del sistema.",
+          "Prueba los estilos de barra de tareas que ofrece."
+        ],
+        video: "https://www.youtube.com/results?search_query=TranslucentTB+Windows+11+español"
+      }
+    ];
+
+    const grid = document.getElementById("app-grid");
+    const searchInput = document.getElementById("search");
+    const resultCount = document.getElementById("result-count");
+    const filterButtons = [...document.querySelectorAll(".filter")];
+
+    let activeCategory = "Todas";
+
+    function escapeHTML(value) {
+      return String(value).replace(/[&<>"']/g, character => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;"
+      })[character]);
+    }
+
+    function renderApps() {
+      const query = searchInput.value.trim().toLowerCase();
+
+      const filteredApps = applications.filter(app => {
+        const matchesCategory =
+          activeCategory === "Todas" ||
+          app.category === activeCategory;
+
+        const searchableText = [
+          app.name,
+          app.category,
+          app.description,
+          app.tags
+        ].join(" ").toLowerCase();
+
+        return matchesCategory && searchableText.includes(query);
+      });
+
+      resultCount.textContent =
+        `${filteredApps.length} aplicación${filteredApps.length === 1 ? "" : "es"}`;
+
+      if (filteredApps.length === 0) {
+        grid.innerHTML = `
+          <div class="empty-state">
+            <div>🔎</div>
+            <strong>No encontramos aplicaciones</strong>
+            <p>Prueba con otro término o selecciona una categoría diferente.</p>
+          </div>
+        `;
+        return;
+      }
+
+      grid.innerHTML = filteredApps.map(app => `
+        <article class="app-card">
+          <div class="app-top">
+            <div class="app-icon" aria-hidden="true">
+              ${escapeHTML(app.icon)}
+            </div>
+
+            <div class="app-title">
+              <h3>${escapeHTML(app.name)}</h3>
+              <span class="category-label">
+                ${escapeHTML(app.category)}
+              </span>
+            </div>
+          </div>
+
+          <p class="app-description">
+            ${escapeHTML(app.description)}
+          </p>
+
+          <div class="tags">
+            ${app.tags.split(" ").slice(0, 4).map(tag => `
+              <span class="tag">${escapeHTML(tag)}</span>
+            `).join("")}
+          </div>
+
+          <div class="card-actions">
+            <a
+              class="btn primary"
+              href="${escapeHTML(app.url)}"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Sitio oficial ↗
+            </a>
+
+            <a
+              class="btn secondary"
+              href="${escapeHTML(app.video)}"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              ▶ Tutorial
+            </a>
+          </div>
+
+          <details class="tutorial">
+            <summary>📘 Guía paso a paso</summary>
+
+            <ol>
+              ${app.steps.map(step => `
+                <li>${escapeHTML(step)}</li>
+              `).join("")}
+            </ol>
+
+            <p class="tutorial-note">
+              Las opciones pueden variar según la versión de la aplicación.
+              Sigue siempre las instrucciones del desarrollador.
+            </p>
+          </details>
+        </article>
+      `).join("");
+    }
+
+    filterButtons.forEach(button => {
+      button.addEventListener("click", () => {
+        activeCategory = button.dataset.category;
+
+        filterButtons.forEach(item => {
+          const selected = item === button;
+          item.classList.toggle("active", selected);
+          item.setAttribute("aria-pressed", String(selected));
+        });
+
+        renderApps();
+      });
+
+      button.setAttribute(
+        "aria-pressed",
+        String(button.dataset.category === "Todas")
+      );
+    });
+
+    searchInput.addEventListener("input", renderApps);
+
+    renderApps();
+  </script>
+</body>
+</html>
